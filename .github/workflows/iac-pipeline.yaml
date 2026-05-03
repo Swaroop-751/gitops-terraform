@@ -34,7 +34,7 @@ jobs:
         run: terraform init
         
       - name: Unlock Backend
-        run: terraform force-unlock 1777813107798985
+        run: terraform force-unlock -force 1777813107798985
 
       - name: Terraform Plan
         run: terraform plan
