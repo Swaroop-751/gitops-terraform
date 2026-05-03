@@ -5,6 +5,11 @@ terraform {
       version = "7.30.0"
     }
   }
+
+  backend "gcs" {
+  bucket = "tf-backend-bucket-01"
+  prefix = "terraform/state"
+  }
 }
 
 provider "google" {
@@ -13,7 +18,4 @@ provider "google" {
   zone = "us-central1-a"
 }
 
-backend "gcs" {
-  bucket = " tf-backend-bucket-01"
-  prefix = "terraform/state"
-}
+
