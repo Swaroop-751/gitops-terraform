@@ -42,7 +42,7 @@ jobs:
     runs-on: ubuntu-latest
 
     environment: production 
-    
+
     env:
       GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
 
@@ -58,6 +58,9 @@ jobs:
         uses: hashicorp/setup-terraform@v3
         with:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+      - name: Unlock Backend
+        run: terraform force-unlock 1777813107798985
 
       - name: Terraform Init
         run: terraform init
