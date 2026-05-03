@@ -3,5 +3,13 @@ resource "google_compute_network" "custom-vpc" {
   auto_create_subnetworks = false
   description             = "VPC for IaC pipeline testing"
   routing_mode            = "REGIONAL"
+
+}
+
+resource "google_compute_subnetwork" "sub-sg" {
+    name          = "subnet-for-iac"
+    network       = "google_compute_network.custom-vpc.id"
+    ip_cidr_range = "10.0.1.0/24"
+    region        = "us-central1"
   
 }
