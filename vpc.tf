@@ -13,3 +13,14 @@ resource "google_compute_subnetwork" "sub-sg" {
     region        = "us-central1"
   
 }
+
+resource "google_compute_firewall" "fw-sg" {
+    name    = "fw-for-iac"
+    network = "google_compute_network.custom-vpc.id"
+  
+    allow {
+      protocol = "tcp"
+      ports    = ["22", "80", "443"]
+    }
+  
+}
