@@ -1,4 +1,4 @@
-name: Provisioning
+name: Infra Provisioning
 
 on:
  # push:
