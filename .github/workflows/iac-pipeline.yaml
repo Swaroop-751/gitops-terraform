@@ -34,3 +34,10 @@ jobs:
       # Initialize a new or existing Terraform working directory
       - name: Terraform Init
         run: terraform init
+
+      - name: Terraform Plan
+        run: terraform plan 
+
+      # On push to "main", build or change infrastructure according to Terraform configuration files
+      - name: Terraform Apply
+        run: terraform apply -auto-approve 
