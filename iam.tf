@@ -1,12 +1,13 @@
 resource "google_project_iam_member" "storage_admin" {
-  project = var.project_id
-  role    = "roles/storage.admin"
-  member = var.iam_users
+  for_each = toset(var.iam_users)
+  project  = var.project_id
+  role     = "roles/storage.admin"
+  member   = each.value
 }
 
 resource "google_project_iam_member" "network_admin" {
-  project = var.project_id
-  role    = "roles/compute.networkAdmin"
-  member = var.iam_users
+  for_each = toset(var.iam_users)
+  project  = var.project_id
+  role     = "roles/compute.networkAdmin"
+  member   = each.value
 }
-
