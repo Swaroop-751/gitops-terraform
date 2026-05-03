@@ -4,25 +4,24 @@ on:
   push:
     branches: [ "main" ]
   workflow_dispatch:
-    
+
 permissions:
   contents: read
 
 jobs:
-  terraform:
-    name: "Terraform"
+
+  terraform-plan:
+    name: Terraform Plan
     runs-on: ubuntu-latest
 
     env:
       GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
 
-    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
       run:
         shell: bash
 
     steps:
-      # Checkout the repository to the GitHub Actions runner
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -31,13 +30,37 @@ jobs:
         with:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-      # Initialize a new or existing Terraform working directory
       - name: Terraform Init
         run: terraform init
 
       - name: Terraform Plan
-        run: terraform plan 
+        run: terraform plan
 
-      # On push to "main", build or change infrastructure according to Terraform configuration files
+  terraform-apply:
+    name: Terraform Apply
+    needs: terraform-plan
+    runs-on: ubuntu-latest
+
+    environment: production   # 👈 approval happens here
+
+    env:
+      GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+      - name: Terraform Init
+        run: terraform init
+
       - name: Terraform Apply
-        run: terraform apply -auto-approve 
+        run: terraform apply -auto-approves
