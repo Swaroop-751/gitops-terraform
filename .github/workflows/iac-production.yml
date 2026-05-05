@@ -10,6 +10,7 @@ on:
 
 permissions:
   contents: read
+  id-token: write   # for OIDC auth
 
 jobs:
 
@@ -27,10 +28,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
+      - id: 'auth'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v1'
         with:
-          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+          token_format: 'access_token' # Standard format for most GCP actions
+          workload_identity_provider: 'projects/910979016640/locations/global/workloadIdentityPools/iac-github-actions/providers/github-provider'
+          service_account: 'wif-for-gitops@project-07b2981c-18fb-4fa4-acd.iam.gserviceaccount.com'
 
       - name: Terraform Init
         run: terraform init
@@ -51,6 +55,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - id: 'auth'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          token_format: 'access_token' # Standard format for most GCP actions
+          workload_identity_provider: 'projects/910979016640/locations/global/workloadIdentityPools/iac-github-actions/providers/github-provider'
+          service_account: 'wif-for-gitops@project-07b2981c-18fb-4fa4-acd.iam.gserviceaccount.com'
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
@@ -89,3 +101,10 @@ jobs:
 
       - name: Terraform Apply
         run: terraform apply -auto-approve
+
+
+gcloud iam service-accounts add-iam-policy-binding "wif-for-gitops@project-07b2981c-18fb-4fa4-acd.iam.gserviceaccount.com" \
+    --project="project-07b2981c-18fb-4fa4-acd" \
+    --role="roles/iam.workloadIdentityUser" \
+    --member="principalSet://iam.googleapis.com/projects/910979016640/locations/global/workloadIdentityPools/iac-github-actions/attribute.repository/Swaroop-751/gitops-terraform"
+    https://iam.googleapis.com/projects/910979016640/locations/global/workloadIdentityPools/iac-github-actions/providers/github
