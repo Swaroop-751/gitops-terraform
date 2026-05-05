@@ -108,4 +108,4 @@ jobs:
  #   --project="project-07b2981c-18fb-4fa4-acd" \
   #  --role="roles/iam.workloadIdentityUser" \
    # --member="principalSet://iam.googleapis.com/projects/910979016640/locations/global/workloadIdentityPools/iac-github-actions/attribute.repository/Swaroop-751/gitops-terraform"
-    #https://iam.googleapis.com/projects/910979016640/locations/global/workloadIdentityPools/iac-github-actions/providers/github
+    # https://iam.googleapis.com/projects/910979016640/locations/global/workloadIdentityPools/iac-github-actions/providers/github
