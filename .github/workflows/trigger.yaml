@@ -12,7 +12,7 @@ jobs:
           curl -X POST \
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer ${{ secrets.REPO_B_TOKEN }}" \
-            https://api.github.com/repos/Swaroop-751/E-Commerce-DevOps-ProjectB/dispatches \
+            https://api.github.com/repos/Swaroop-751/E-Commerce-DevOps-Project/dispatches \
             -d '{
               "event_type": "terraform_apply",
               "client_payload": {
